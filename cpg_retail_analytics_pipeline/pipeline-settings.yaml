@@ -1,0 +1,64 @@
+# CPG Retail Analytics Pipeline (lalitstar) - pipeline configuration, kept in Git for version control.
+# This file mirrors the live pipeline settings. If the pipeline is ever recreated, these values
+# (plus the transformations/ sources in this folder) reproduce it.
+# Pipeline ID: 5adfd5ae-3556-429a-aafb-1ce8230c2153
+
+pipeline_id: 5adfd5ae-3556-429a-aafb-1ce8230c2153
+pipeline_type: WORKSPACE
+name: CPG Retail Analytics Pipeline (lalitstar)
+
+# Unity Catalog publish target
+catalog: genie_workshop_catalog
+schema: lalitstar
+
+# Source code location
+root_path: /Workspace/Users/lalitstar@gmail.com/Databricks-Genie-family/cpg_retail_analytics_pipeline
+libraries:
+  - glob:
+      include: /Workspace/Users/lalitstar@gmail.com/Databricks-Genie-family/cpg_retail_analytics_pipeline/transformations/**
+
+# Compute / runtime
+serverless: true
+photon: true
+channel: CURRENT
+continuous: false   # triggered mode (runs on demand, shuts down after each update)
+development: false
+
+# Ownership
+owner:
+  creator: lalitstar@gmail.com
+  run_as: lalitstar@gmail.com
+
+# Data sources (read-only, Delta-shared)
+sources:
+  catalog: crisp_inc_cpg_retail_and_distributor_data_samples
+  schema: examples
+  tables:
+    - harmonized_retailer_sales
+    - harmonized_retailer_inventory_store
+    - harmonized_retailer_inventory_dc
+
+# Published tables (genie_workshop_catalog.lalitstar)
+published_tables:
+  bronze:
+    - bronze_retailer_sales
+    - bronze_retailer_inventory_store
+    - bronze_retailer_inventory_dc
+  silver:
+    dimensions:
+      - dim_product
+      - dim_store
+      - dim_distribution_center
+    facts:
+      - fact_daily_sales
+      - fact_daily_store_inventory
+      - fact_daily_dc_inventory
+  gold:
+    - gold_sales_velocity            # weekly sales rate per product x store
+    - gold_inventory_health           # days of supply + stock status per product x store
+    - gold_supply_chain_coverage      # DC-to-store fill rate per product x retailer x month
+
+# Scheduling
+# No Lakeflow job currently references or schedules this pipeline; updates are started manually.
+# If a job is created later, record its details here.
+jobs: []
