@@ -42,15 +42,15 @@ def gold_inventory_health():
             ),
         )
         .withColumn(
+            # Stock classification: OUT_OF_STOCK (0 units), LOW_STOCK (< 7 days of
+            # supply), OVERSTOCK (> 60 days of supply), HEALTHY (7-60 days).
+            # Rows with stock but no sales history have NULL days_of_supply and
+            # default to HEALTHY.
             "stock_status",
             F.when(F.col("current_on_hand") <= 0, F.lit("OUT_OF_STOCK"))
-            .when(
-                F.col("avg_daily_units").isNull() | (F.col("avg_daily_units") <= 0),
-                F.lit("NO_SALES_HISTORY"),
-            )
             .when(F.col("days_of_supply") < 7, F.lit("LOW_STOCK"))
-            .when(F.col("days_of_supply") < 30, F.lit("HEALTHY"))
-            .otherwise(F.lit("OVERSTOCK")),
+            .when(F.col("days_of_supply") > 60, F.lit("OVERSTOCK"))
+            .otherwise(F.lit("HEALTHY")),
         )
     )
 
