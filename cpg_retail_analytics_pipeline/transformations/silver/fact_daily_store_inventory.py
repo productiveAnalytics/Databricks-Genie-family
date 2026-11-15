@@ -6,6 +6,11 @@ from pyspark.sql import functions as F
     name="fact_daily_store_inventory",
     comment="Silver layer: daily store inventory facts aggregated by date x product x store x retailer.",
 )
+# Data quality: drop aggregated rows with negative on-hand quantity.
+@dp.expect_or_drop(
+    "valid_on_hand_quantity",
+    "total_on_hand_quantity >= 0",
+)
 def fact_daily_store_inventory():
     return (
         spark.read.table("bronze_retailer_inventory_store")
