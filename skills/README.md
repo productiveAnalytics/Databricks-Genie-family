@@ -2,6 +2,14 @@
 
 Reusable user skills for Genie Code, version-controlled in this repo. Each skill lives in its own folder and is defined by a `SKILL.md` file: YAML frontmatter (`name`, `description`) plus a markdown body of instructions.
 
+## Skills v/s Instructions
+### Filter the list by User or Workspace
+- User skills live in `/Users/<you>/.assistant/skills/`. Only you can use them.
+- Workspace skills live in `/Workspace/.assistant/skills/`. Every user in the workspace can use them.
+### For rules that should apply to every task, use Instructions instead
+- User instructions apply to every conversation you start. Click Add instructions file to create `/Users/<you>/.assistant_instructions.md`, then write your preferences in it.
+- Workspace instructions apply to every user in the workspace. Only workspace admins can edit that file, `/Workspace/.assistant_workspace_instructions.md`. When the two files conflict, the workspace file wins
+
 ## Skill reference
 
 | Skill | What it does | Trigger |
