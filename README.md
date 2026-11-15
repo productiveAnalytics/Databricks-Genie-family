@@ -4,6 +4,8 @@
 - [CPG Retail and Distributor Data Samples from Databricks Marketplace](https://marketplace.databricks.com/details/0a82f0ae-1709-4313-80f0-cdc8b29382bb/Crisp-Inc_CPG-Retail-and-Distributor-Data-Samples)
 
 ## Module 1: Genie Code
+### Use skill to rebuild medallion data
+If gold tables are gone, run the prompt again or call the skill @medallion-from-raw.
 
 ## Module 2: Genie Agent
 
